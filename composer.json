@@ -1,0 +1,74 @@
+{
+    "name": "coisa/proxy",
+    "type": "library",
+    "description": "PSR HTTP Proxy Server Handlers",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Felipe Sayão Lobato Abreu",
+            "email": "github@felipeabreu.com.br"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.0",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0"
+    },
+    "provide": {
+        "psr/http-client-implementation": "^1.0",
+        "psr/http-factory-implementation": "^1.0",
+        "psr/http-server-handler-implementation": "^1.0",
+        "psr/http-server-middleware-implementation": "^1.0"
+    },
+    "require-dev": {
+        "coisa/container": "1.x-dev",
+        "container-interop/service-provider": "^0.4.0",
+        "ellipse/container": "^0.4.10",
+        "friendsofphp/php-cs-fixer": "^2.14",
+        "infection/infection": "^0.12.2",
+        "laminas/laminas-diactoros": "^2.3",
+        "laminas/laminas-servicemanager": "^3.4",
+        "phan/phan": "^1.2",
+        "php-http/curl-client": "^2.1",
+        "php-parallel-lint/php-parallel-lint": "^1.2",
+        "phpunit/phpunit": "^8.0",
+        "pimple/pimple": "^3.3",
+        "sensiolabs/security-checker": "^5.0",
+        "squizlabs/php_codesniffer": "^3.4"
+    },
+    "config": {
+        "prefer-stable": true,
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "CoiSA\\Proxy\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CoiSA\\Proxy\\Test\\": "tests/"
+        }
+    },
+    "scripts": {
+        "check": [
+            "@lint",
+            "@test",
+            "@sniff",
+            "@cs-check"
+        ],
+        "cs-check": "php-cs-fixer fix --dry-run --diff",
+        "cs-fix": "php-cs-fixer fix",
+        "lint": "parallel-lint --exclude vendor .",
+        "sniff": "phpcs",
+        "test": "phpunit --color=always"
+    }
+}
