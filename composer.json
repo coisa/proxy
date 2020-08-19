@@ -46,6 +46,9 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
+        },
+        "laminas": {
+            "config-provider": "CoiSA\\Proxy\\Container\\ConfigProvider\\ProxyConfigProvider"
         }
     },
     "autoload": {
