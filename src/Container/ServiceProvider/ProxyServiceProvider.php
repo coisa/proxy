@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace CoiSA\Proxy\Container\ServiceProvider;
 
 use CoiSA\Proxy\Container\ConfigProvider\ProxyConfigProvider;
+use CoiSA\Proxy\Http\Message\ProxyUriFactory;
 use Interop\Container\ServiceProviderInterface;
 use Psr\Container\ContainerInterface;
 
@@ -41,7 +42,7 @@ final class ProxyServiceProvider implements ServiceProviderInterface
      *
      * @param null|string $proxyUrl
      */
-    public function __construct(string $proxyUrl = '')
+    public function __construct(string $proxyUrl = null)
     {
         $this->proxyUrl       = $proxyUrl;
         $this->configProvider = new ProxyConfigProvider();
@@ -73,6 +74,10 @@ final class ProxyServiceProvider implements ServiceProviderInterface
         return [
             'config' => function (ContainerInterface $container, $previous = null) {
                 $config = $previous ?? [];
+
+                if ($this->proxyUrl) {
+                    $config[ProxyUriFactory::class] = $this->proxyUrl;
+                }
 
                 return \array_merge(
                     $this->configProvider->getConfig(),

@@ -49,6 +49,8 @@ final class ProxyServiceProviderTest extends TestCase
 
                 $this->assertIsArray($config);
                 $this->assertArrayHasKey(ProxyUriFactory::class, $config);
+
+                $config = $container->get('config');
                 $this->assertEquals($config[ProxyUriFactory::class], (string) $proxyUriFactory->getTargetUri());
 
                 continue;
