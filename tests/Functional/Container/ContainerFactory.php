@@ -15,11 +15,13 @@ declare(strict_types=1);
 
 namespace CoiSA\Proxy\Test\Functional\Container;
 
-use CoiSA\Container\Container;
-use CoiSA\Container\Singleton\ContainerSingleton;
 use CoiSA\Proxy\Container\ConfigProvider\ProxyConfigProvider;
 use CoiSA\Proxy\Container\ServiceProvider\ProxyServiceProvider;
-use CoiSA\Proxy\Http\Message\ProxyUriFactory;
+use CoiSA\ServiceProvider\DynamicServiceProvider;
+use CoiSA\ServiceProvider\Factory\AliasFactory;
+use CoiSA\ServiceProvider\Factory\InvokableFactory;
+use CoiSA\ServiceProvider\LaminasConfigServiceProvider;
+use CoiSA\ServiceProvider\ServiceProviderAggregator;
 use Http\Client\Curl\Client;
 use Interop\Container\ServiceProviderInterface;
 use Laminas\Diactoros\ConfigProvider;
@@ -48,14 +50,13 @@ abstract class ContainerFactory
     }
 
     /**
-     * @return Container
+     * @return \Ellipse\Container
      */
-    public static function createCoisaContainer(): Container
+    public static function createServiceProviderContainer(): \Ellipse\Container
     {
-        ContainerSingleton::register(new ProxyServiceProvider(self::DEFAULT_PROXY_URI));
-        ContainerSingleton::register(self::createServiceProvider());
+        $serviceProvider = self::createServiceProvider();
 
-        return ContainerSingleton::getInstance();
+        return new \Ellipse\Container([$serviceProvider]);
     }
 
     /**
@@ -63,15 +64,15 @@ abstract class ContainerFactory
      */
     private static function createServiceManager(): ServiceManager
     {
-        $configProvider = new ProxyConfigProvider(self::DEFAULT_PROXY_URI);
+        $proxyConfigProvider     = new ProxyConfigProvider(self::DEFAULT_PROXY_URI);
+        $diactorosConfigProvider = new ConfigProvider();
 
-        $config                         = $configProvider();
-        $config[ProxyUriFactory::class] = self::DEFAULT_PROXY_URI;
+        $config = \array_merge_recursive(
+            $proxyConfigProvider(),
+            $diactorosConfigProvider()
+        );
 
-        $serviceManager = new ServiceManager();
-        $serviceManager->configure($configProvider->getDependencies());
-        $serviceManager->configure((new ConfigProvider())->getDependencies());
-
+        $serviceManager = new ServiceManager($config['dependencies']);
         $serviceManager->setService('config', $config);
         $serviceManager->setService(ClientInterface::class, new Client());
 
@@ -83,28 +84,20 @@ abstract class ContainerFactory
      */
     private static function createServiceProvider(): ServiceProviderInterface
     {
-        return new class() implements ServiceProviderInterface {
-            public function getFactories()
-            {
-                $factories = (new ConfigProvider())->getDependencies()['invokables'];
+        $proxyServiceProvider = new ProxyServiceProvider(self::DEFAULT_PROXY_URI);
 
-                foreach ($factories as $class => $factory) {
-                    $factories[$class] = function () use ($factory) {
-                        return new $factory();
-                    };
-                }
+        $diactorosConfigProvider      = new ConfigProvider();
+        $laminasConfigServiceProvider = new LaminasConfigServiceProvider($diactorosConfigProvider());
 
-                $factories[ClientInterface::class] = function () {
-                    return new Client();
-                };
+        $dynamicServiceProvider = new DynamicServiceProvider();
+        $dynamicServiceProvider->addFactory(Client::class, new InvokableFactory(Client::class));
+        $dynamicServiceProvider->addFactory(ClientInterface::class, new AliasFactory(Client::class));
 
-                return $factories;
-            }
+        $serviceProviderAggregator = new ServiceProviderAggregator();
+        $serviceProviderAggregator->append($proxyServiceProvider);
+        $serviceProviderAggregator->append($laminasConfigServiceProvider);
+        $serviceProviderAggregator->append($dynamicServiceProvider);
 
-            public function getExtensions()
-            {
-                return [];
-            }
-        };
+        return $serviceProviderAggregator;
     }
 }

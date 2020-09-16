@@ -19,7 +19,6 @@ use CoiSA\Proxy\Container\Factory;
 use CoiSA\Proxy\Http\Client\ProxyClient;
 use CoiSA\Proxy\Http\Message\ProxyUriFactory;
 use CoiSA\Proxy\Http\Server\Middleware\ProxyMiddleware;
-
 use CoiSA\Proxy\Http\Server\RequestHandler\ProxyRequestHandler;
 
 /**
@@ -30,14 +29,28 @@ use CoiSA\Proxy\Http\Server\RequestHandler\ProxyRequestHandler;
 final class ProxyConfigProvider
 {
     /**
+     * @var string
+     */
+    private $proxyUrl;
+
+    /**
+     * ProxyConfigProvider constructor.
+     *
+     * @param null|string $proxyUrl
+     */
+    public function __construct(string $proxyUrl = null)
+    {
+        $this->proxyUrl = $proxyUrl ?: '';
+    }
+
+    /**
      * @return array
      */
     public function __invoke(): array
     {
-        return \array_merge(
-            $this->getConfig(),
-            $this->getDependencies()
-        );
+        return \array_merge($this->getConfig(), [
+            'dependencies' => $this->getDependencies()
+        ]);
     }
 
     /**
@@ -46,7 +59,7 @@ final class ProxyConfigProvider
     public function getConfig(): array
     {
         return [
-            ProxyUriFactory::class => '',
+            ProxyUriFactory::class => $this->proxyUrl,
         ];
     }
 
@@ -56,7 +69,18 @@ final class ProxyConfigProvider
     public function getDependencies(): array
     {
         return [
+            'services'  => $this->getServices(),
             'factories' => $this->getFactories(),
+        ];
+    }
+
+    /**
+     * @return object[]
+     */
+    public function getServices(): array
+    {
+        return [
+            self::class => $this,
         ];
     }
 

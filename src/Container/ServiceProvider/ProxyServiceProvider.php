@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace CoiSA\Proxy\Container\ServiceProvider;
 
 use CoiSA\Proxy\Container\ConfigProvider\ProxyConfigProvider;
-use CoiSA\Proxy\Http\Message\ProxyUriFactory;
+use CoiSA\ServiceProvider\LaminasConfigServiceProvider;
 use Interop\Container\ServiceProviderInterface;
 use Psr\Container\ContainerInterface;
 
@@ -28,14 +28,9 @@ use Psr\Container\ContainerInterface;
 final class ProxyServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @var null|string
+     * @var ServiceProviderInterface
      */
-    private $proxyUrl;
-
-    /**
-     * @var ProxyConfigProvider
-     */
-    private $configProvider;
+    private $serviceProvider;
 
     /**
      * ProxyServiceProvider constructor.
@@ -44,8 +39,8 @@ final class ProxyServiceProvider implements ServiceProviderInterface
      */
     public function __construct(string $proxyUrl = null)
     {
-        $this->proxyUrl       = $proxyUrl;
-        $this->configProvider = new ProxyConfigProvider();
+        $configProvider        = new ProxyConfigProvider($proxyUrl);
+        $this->serviceProvider = new LaminasConfigServiceProvider($configProvider());
     }
 
     /**
@@ -53,17 +48,7 @@ final class ProxyServiceProvider implements ServiceProviderInterface
      */
     public function getFactories()
     {
-        $factories = $this->configProvider->getFactories();
-
-        foreach ($factories as $class => $factory) {
-            $factories[$class] = new $factory();
-        }
-
-        $factories['config'] = function () {
-            return $this->configProvider->getConfig();
-        };
-
-        return $factories;
+        return $this->serviceProvider->getFactories();
     }
 
     /**
@@ -71,19 +56,13 @@ final class ProxyServiceProvider implements ServiceProviderInterface
      */
     public function getExtensions()
     {
-        return [
-            'config' => function (ContainerInterface $container, $previous = null) {
-                $config = $previous ?? [];
+        return \array_merge($this->serviceProvider->getExtensions(), [
+            'config' => function (ContainerInterface $container, $config = []) {
+                $proxyConfigProvider = $container->get(ProxyConfigProvider::class);
+                $proxyConfig = \call_user_func($proxyConfigProvider);
 
-                if ($this->proxyUrl) {
-                    $config[ProxyUriFactory::class] = $this->proxyUrl;
-                }
-
-                return \array_merge(
-                    $this->configProvider->getConfig(),
-                    $config
-                );
-            },
-        ];
+                return \array_merge($config, $proxyConfig);
+            }
+        ]);
     }
 }

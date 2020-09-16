@@ -11,6 +11,8 @@
     ],
     "require": {
         "php": ">=7.0",
+        "coisa/service-provider": "1.x-dev",
+        "psr/container": "^1.0",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
         "psr/http-message": "^1.0",
