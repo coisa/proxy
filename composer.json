@@ -11,6 +11,7 @@
     ],
     "require": {
         "php": ">=7.0",
+        "coisa/container": "1.x-dev",
         "coisa/service-provider": "1.x-dev",
         "psr/container": "^1.0",
         "psr/http-client": "^1.0",
@@ -27,7 +28,6 @@
         "psr/http-server-middleware-implementation": "^1.0"
     },
     "require-dev": {
-        "coisa/container": "1.x-dev",
         "container-interop/service-provider": "^0.4.0",
         "ellipse/container": "^0.4.10",
         "friendsofphp/php-cs-fixer": "^2.14",
