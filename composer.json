@@ -20,6 +20,7 @@
         "psr/http-server-middleware": "^1.0"
     },
     "provide": {
+        "psr/container-implementation": "^1.0",
         "psr/http-client-implementation": "^1.0",
         "psr/http-factory-implementation": "^1.0",
         "psr/http-server-handler-implementation": "^1.0",
