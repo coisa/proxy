@@ -17,21 +17,15 @@ namespace CoiSA\Proxy\Container\ServiceProvider;
 
 use CoiSA\Proxy\Container\ConfigProvider\ProxyConfigProvider;
 use CoiSA\ServiceProvider\LaminasConfigServiceProvider;
-use Interop\Container\ServiceProviderInterface;
-use Psr\Container\ContainerInterface;
+use CoiSA\ServiceProvider\ServiceProvider;
 
 /**
  * Class ProxyServiceProvider
  *
  * @package CoiSA\Proxy\Container\ServiceProvider
  */
-final class ProxyServiceProvider implements ServiceProviderInterface
+final class ProxyServiceProvider extends ServiceProvider
 {
-    /**
-     * @var ServiceProviderInterface
-     */
-    private $serviceProvider;
-
     /**
      * ProxyServiceProvider constructor.
      *
@@ -39,30 +33,10 @@ final class ProxyServiceProvider implements ServiceProviderInterface
      */
     public function __construct(string $proxyUrl = null)
     {
-        $configProvider        = new ProxyConfigProvider($proxyUrl);
-        $this->serviceProvider = new LaminasConfigServiceProvider($configProvider());
-    }
+        $configProvider  = new ProxyConfigProvider($proxyUrl);
+        $serviceProvider = new LaminasConfigServiceProvider($configProvider());
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getFactories()
-    {
-        return $this->serviceProvider->getFactories();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getExtensions()
-    {
-        return \array_merge($this->serviceProvider->getExtensions(), [
-            'config' => function (ContainerInterface $container, $config = []) {
-                $proxyConfigProvider = $container->get(ProxyConfigProvider::class);
-                $proxyConfig = \call_user_func($proxyConfigProvider);
-
-                return \array_merge($config, $proxyConfig);
-            }
-        ]);
+        $this->factories  = $serviceProvider->getFactories();
+        $this->extensions = $serviceProvider->getExtensions();
     }
 }

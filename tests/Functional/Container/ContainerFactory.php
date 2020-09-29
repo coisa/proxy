@@ -15,9 +15,9 @@ declare(strict_types=1);
 
 namespace CoiSA\Proxy\Test\Functional\Container;
 
+use CoiSA\Container\Container;
 use CoiSA\Proxy\Container\ConfigProvider\ProxyConfigProvider;
 use CoiSA\Proxy\Container\ServiceProvider\ProxyServiceProvider;
-use CoiSA\ServiceProvider\DynamicServiceProvider;
 use CoiSA\ServiceProvider\Factory\AliasFactory;
 use CoiSA\ServiceProvider\Factory\InvokableFactory;
 use CoiSA\ServiceProvider\LaminasConfigServiceProvider;
@@ -50,13 +50,16 @@ abstract class ContainerFactory
     }
 
     /**
-     * @return \Ellipse\Container
+     * @return Container
      */
-    public static function createServiceProviderContainer(): \Ellipse\Container
+    public static function createServiceProviderContainer(): Container
     {
         $serviceProvider = self::createServiceProvider();
 
-        return new \Ellipse\Container([$serviceProvider]);
+        $container = new Container();
+        $container->register($serviceProvider);
+
+        return $container;
     }
 
     /**
@@ -85,18 +88,15 @@ abstract class ContainerFactory
     private static function createServiceProvider(): ServiceProviderInterface
     {
         $proxyServiceProvider = new ProxyServiceProvider(self::DEFAULT_PROXY_URI);
+        $proxyServiceProvider->setFactory(Client::class, new InvokableFactory(Client::class));
+        $proxyServiceProvider->setFactory(ClientInterface::class, new AliasFactory(Client::class));
 
         $diactorosConfigProvider      = new ConfigProvider();
         $laminasConfigServiceProvider = new LaminasConfigServiceProvider($diactorosConfigProvider());
 
-        $dynamicServiceProvider = new DynamicServiceProvider();
-        $dynamicServiceProvider->addFactory(Client::class, new InvokableFactory(Client::class));
-        $dynamicServiceProvider->addFactory(ClientInterface::class, new AliasFactory(Client::class));
-
         $serviceProviderAggregator = new ServiceProviderAggregator();
         $serviceProviderAggregator->append($proxyServiceProvider);
         $serviceProviderAggregator->append($laminasConfigServiceProvider);
-        $serviceProviderAggregator->append($dynamicServiceProvider);
 
         return $serviceProviderAggregator;
     }

@@ -49,7 +49,11 @@ final class ProxyServiceProviderTest extends TestCase
         foreach ($this->proxyServiceProvider->getFactories() as $instanceOf => $factory) {
             $object = $factory($this->container);
 
-            $this->assertInstanceOf($instanceOf, $object);
+            if ($instanceOf === 'config') {
+                $this->assertIsArray($object);
+            } else {
+                $this->assertInstanceOf($instanceOf, $object);
+            }
         }
     }
 
