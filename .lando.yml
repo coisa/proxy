@@ -4,7 +4,7 @@ name: proxy
 
 services:
   php:
-    type: php:7.0
+    type: php:7.1
     via: cli
     build_as_root:
       - docker-php-ext-enable xdebug
@@ -12,10 +12,10 @@ services:
 tooling:
   php:
     service: php
-    description: Runs with php 7.0
+    description: Runs with php 7.1
     cmd: php
 
   composer:
     service: php
-    description: Runs composer with php 7.0
+    description: Runs composer with php 7.1
     cmd: composer
