@@ -1,0 +1,21 @@
+# https://docs.lando.dev/
+
+name: proxy
+
+services:
+  php:
+    type: php:7.0
+    via: cli
+    build_as_root:
+      - docker-php-ext-enable xdebug
+
+tooling:
+  php:
+    service: php
+    description: Runs with php 7.0
+    cmd: php
+
+  composer:
+    service: php
+    description: Runs composer with php 7.0
+    cmd: composer
