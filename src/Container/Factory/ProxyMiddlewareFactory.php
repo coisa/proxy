@@ -17,7 +17,7 @@ namespace CoiSA\Proxy\Container\Factory;
 
 use CoiSA\Proxy\Http\Message\ProxyUriFactory;
 use CoiSA\Proxy\Http\Server\Middleware\ProxyMiddleware;
-use CoiSA\ServiceProvider\Factory\FactoryInterface;
+use CoiSA\ServiceProvider\Factory\ServiceProviderFactoryInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -25,7 +25,7 @@ use Psr\Container\ContainerInterface;
  *
  * @package CoiSA\Proxy\Container\Factory
  */
-final class ProxyMiddlewareFactory implements FactoryInterface
+final class ProxyMiddlewareFactory implements ServiceProviderFactoryInterface
 {
     /**
      * @param ContainerInterface $container
