@@ -22,7 +22,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * Class ProxyMiddleware
+ * Class ProxyMiddleware.
  *
  * @package CoiSA\Proxy\Http\Server\Middleware
  */
@@ -44,7 +44,7 @@ final class ProxyMiddleware implements MiddlewareInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

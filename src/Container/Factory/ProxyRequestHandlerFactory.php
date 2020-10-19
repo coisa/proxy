@@ -21,7 +21,7 @@ use CoiSA\ServiceProvider\Factory\FactoryInterface;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class ProxyRequestHandlerFactory
+ * Class ProxyRequestHandlerFactory.
  *
  * @package CoiSA\Proxy\Container\Factory
  */

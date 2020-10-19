@@ -21,7 +21,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * Class ProxyRequestHandler
+ * Class ProxyRequestHandler.
  *
  * @package CoiSA\Proxy\Http\Server\RequestHandler
  */
@@ -43,7 +43,7 @@ final class ProxyRequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

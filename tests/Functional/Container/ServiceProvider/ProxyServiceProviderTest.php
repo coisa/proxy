@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class ProxyServiceProviderTest
+ * Class ProxyServiceProviderTest.
  *
  * @package CoiSA\Proxy\Test\Functional\Container\ServiceProvider
  */

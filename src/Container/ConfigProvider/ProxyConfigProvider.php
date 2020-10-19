@@ -22,7 +22,7 @@ use CoiSA\Proxy\Http\Server\Middleware\ProxyMiddleware;
 use CoiSA\Proxy\Http\Server\RequestHandler\ProxyRequestHandler;
 
 /**
- * Class ProxyConfigProvider
+ * Class ProxyConfigProvider.
  *
  * @package CoiSA\Proxy\Container\ConfigProvider
  */
@@ -49,7 +49,7 @@ final class ProxyConfigProvider
     public function __invoke(): array
     {
         return \array_merge($this->getConfig(), [
-            'dependencies' => $this->getDependencies()
+            'dependencies' => $this->getDependencies(),
         ]);
     }
 

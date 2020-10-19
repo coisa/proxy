@@ -23,7 +23,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
 /**
- * Class ProxyClientFactory
+ * Class ProxyClientFactory.
  *
  * @package CoiSA\Proxy\Container\Factory
  */

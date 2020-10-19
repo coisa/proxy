@@ -21,7 +21,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\UriFactoryInterface;
 
 /**
- * Class ProxyUriFactoryFactory
+ * Class ProxyUriFactoryFactory.
  *
  * @package CoiSA\Proxy\Container\Factory
  */

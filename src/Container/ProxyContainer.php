@@ -20,7 +20,7 @@ use CoiSA\Proxy\Container\ServiceProvider\ProxyServiceProvider;
 use Psr\Container\ContainerInterface;
 
 /**
- * Class ProxyContainer
+ * Class ProxyContainer.
  *
  * @package CoiSA\Proxy\Container
  */
@@ -45,7 +45,7 @@ final class ProxyContainer implements ContainerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function has($id)
     {
@@ -53,7 +53,7 @@ final class ProxyContainer implements ContainerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($id)
     {

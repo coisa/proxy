@@ -19,7 +19,7 @@ use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
- * Class ProxyUriFactory
+ * Class ProxyUriFactory.
  *
  * @package CoiSA\Proxy\Http\Message
  */

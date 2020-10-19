@@ -20,7 +20,7 @@ use CoiSA\ServiceProvider\LaminasConfigServiceProvider;
 use CoiSA\ServiceProvider\ServiceProvider;
 
 /**
- * Class ProxyServiceProvider
+ * Class ProxyServiceProvider.
  *
  * @package CoiSA\Proxy\Container\ServiceProvider
  */

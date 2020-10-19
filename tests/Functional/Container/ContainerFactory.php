@@ -30,7 +30,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
 
 /**
- * Class ContainerFactory
+ * Class ContainerFactory.
  *
  * @package CoiSA\Proxy\Test\Functional\Container
  */

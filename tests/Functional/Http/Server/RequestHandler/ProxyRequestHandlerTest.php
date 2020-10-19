@@ -24,7 +24,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Class ProxyRequestHandlerTest
+ * Class ProxyRequestHandlerTest.
  *
  * @package CoiSA\Proxy\Test\Functional\Http\Server\RequestHandler
  */

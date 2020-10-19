@@ -22,7 +22,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UriFactoryInterface;
 
 /**
- * Class ProxyClient
+ * Class ProxyClient.
  *
  * @package CoiSA\Proxy\Client
  */
@@ -61,7 +61,7 @@ final class ProxyClient implements ClientInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
