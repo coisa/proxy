@@ -8,6 +8,9 @@ updates:
       github-actions:
         patterns:
           - "*"
+    labels:
+      - dependencies
+      - github-actions
   - package-ecosystem: composer
     directory: /
     schedule:
@@ -21,3 +24,6 @@ updates:
         dependency-type: development
         patterns:
           - "*"
+    labels:
+      - dependencies
+      - composer
