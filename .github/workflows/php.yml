@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -27,7 +27,7 @@ jobs:
 
       - name: Cache composer dependencies
         id: composer-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composercache.outputs.dir }}
           key: ${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.json') }}
